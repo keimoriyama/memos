@@ -25,10 +25,22 @@ cout << bitset<8>(bit) << endl;
 
 ### vector
 
-```
+```test.cpp
 #include <vector>
 // 大きさNの1次元ベクトルを用意する(型はint)
 vector<int> A(N);
-// 0番目に0を代入（[]を使ってアクセスする)
-v[0] = 0
+//i番目の要素にアクセスして0を代入する
+A.at(i) = 0
+```
+
+### 二次元 vector
+
+```vector.cpp
+//宣言のしかた
+vector<vector<要素の型>> 変数名(要素数1, vector<要素の型>(要素数2, 初期値));
+vector<vector<要素の型>> 変数名(要素数1, vector<要素の型>(要素数2));  // 初期値を省略
+// 具体例：int型の2次元配列(3×4要素の)の宣言
+vector<vector<int>> data(3, vector<int>(4));
+//(i,j)番目の要素にアクセスする
+data.at(i).at(j) = 0;
 ```
