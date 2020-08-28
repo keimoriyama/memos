@@ -44,3 +44,48 @@ vector<vector<int>> data(3, vector<int>(4));
 //(i,j)番目の要素にアクセスする
 data.at(i).at(j) = 0;
 ```
+
+### 範囲 for 文
+
+vector のすべての要素に対して for 文を実行する
+
+```
+for ( for-range-declaration : for-range-initializer ) statement
+```
+
+for-range-declaration に変数を宣言して、そこに for-range-initializer の内容が start()から end()まで代入される。
+
+### continue
+
+continue 以下の処理を飛ばす処理。
+
+```
+  for(int v = 1; v < n; v++){
+    if(seen[v])continue;
+    if(dfs(G, v))++count;
+  }
+```
+
+### キューを使う
+
+```
+#include <iostream>
+//ライブラリのインクルード
+#include <queue>
+
+int main()
+{
+//キューの定義
+  std::queue<int> que;
+
+  // 要素を追加
+  que.push(1);
+  que.push(2);
+  que.push(3);
+
+  while (!que.empty()) {
+    std::cout << que.front() << " "; // 先頭要素を参照する
+    que.pop(); // 先頭要素を削除
+  }
+}
+```
