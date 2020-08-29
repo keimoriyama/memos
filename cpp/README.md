@@ -49,7 +49,7 @@ data.at(i).at(j) = 0;
 
 vector のすべての要素に対して for 文を実行する
 
-```
+```for.cpp
 for ( for-range-declaration : for-range-initializer ) statement
 ```
 
@@ -59,7 +59,7 @@ for-range-declaration に変数を宣言して、そこに for-range-initializer
 
 continue 以下の処理を飛ばす処理。
 
-```
+```continue.cpp
   for(int v = 1; v < n; v++){
     if(seen[v])continue;
     if(dfs(G, v))++count;
@@ -68,7 +68,7 @@ continue 以下の処理を飛ばす処理。
 
 ### キューを使う
 
-```
+```que.cpp
 #include <iostream>
 //ライブラリのインクルード
 #include <queue>
