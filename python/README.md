@@ -1,5 +1,15 @@
 # python のメモ
 
+## 空白区切りの入力について
+
+`1 2 3`みたいに空白区切りの入力を受け取るときの処理。
+
+下の例では map 関数を使って入力を空白で区切ったあとに int 型にキャストしてる
+
+```a.py
+D,T,S = map(int, input().split())
+```
+
 ## map 関数
 
 [python3.8.5 公式ドキュメント](https://docs.python.org/ja/3/library/functions.html)より
