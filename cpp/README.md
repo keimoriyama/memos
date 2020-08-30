@@ -25,6 +25,8 @@ cout << bitset<8>(bit) << endl;
 
 ### vector
 
+可変長配列的なやつ
+
 ```test.cpp
 #include <vector>
 // 大きさNの1次元ベクトルを用意する(型はint)
@@ -40,6 +42,7 @@ A.at(i) = 0
 vector<vector<要素の型>> 変数名(要素数1, vector<要素の型>(要素数2, 初期値));
 vector<vector<要素の型>> 変数名(要素数1, vector<要素の型>(要素数2));  // 初期値を省略
 // 具体例：int型の2次元配列(3×4要素の)の宣言
+// 縦に３個、横に４個のベクトルの宣言
 vector<vector<int>> data(3, vector<int>(4));
 //(i,j)番目の要素にアクセスする
 data.at(i).at(j) = 0;
@@ -82,7 +85,7 @@ int main()
   que.push(1);
   que.push(2);
   que.push(3);
-
+  //que.empty()はキューが空のときに１、空じゃないときに0を返す
   while (!que.empty()) {
     std::cout << que.front() << " "; // 先頭要素を参照する
     que.pop(); // 先頭要素を削除

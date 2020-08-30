@@ -31,3 +31,46 @@ void dfs(int i, int j){
   dfs(i,j-1);
 }
 ```
+
+### 幅優先探索
+
+キューを使う。
+
+無向グラフにおいて、スタートからゴールへの最短路を求めたりできる
+
+1. スタート地点をキューに入れる
+
+2. キューが空になるまで以下を繰り替えす
+
+3. キューから点を一つ取り出す
+
+4. その点と隣接する未訪問かつグラフ内の点をキューに入れて、その点に訪問済みフラグを立てる
+
+5. 2 に戻る
+
+以下、サンプルプログラム。
+
+`queue_x` と　`queue_y`は迷路のなかの点の x 座標と y 座標
+
+`R`と`C`は迷路の端の点
+
+```a.cpp
+//キューがからになるまで
+  while(!queue_x.empty() && !queue_y.empty()){
+    int x,y;
+    //点を一つ取り出す
+    x = queue_x.front();
+    y = queue_y.front();
+    queue_x.pop(); queue_y.pop();
+    for(int i = 0; i < 4; i++){
+      //迷路の中の点のときにキューに入れる
+      if(x+dx[i] >= 0 && x+dx[i] < R && y+dy[i] >= 0 && y+dy[i] < C &&
+          c.at(x+dx[i]).at(y+dy[i]) == 1 && visited.at(x+dx[i]).at(y+dy[i]) == 0){
+        queue_x.push(x+dx[i]);
+        queue_y.push(y+dy[i]);
+        //訪問済みフラグを立てる
+        visited.at(x+dx[i]).at(y+dy[i]) = visited.at(x).at(y) + 1;
+      }
+    }
+  }
+```
