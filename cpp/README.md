@@ -46,6 +46,8 @@ vector<vector<要素の型>> 変数名(要素数1, vector<要素の型>(要素�
 vector<vector<int>> data(3, vector<int>(4));
 //(i,j)番目の要素にアクセスする
 data.at(i).at(j) = 0;
+//初期化(n_rowsが縦,n_colsが横,valueが初期化する値)
+vec.assign(n_rows, vector<int>(n_cols, value));
 ```
 
 ### 範囲 for 文
