@@ -35,6 +35,28 @@ vector<int> A(N);
 A.at(i) = 0
 ```
 
+### vector のソート
+
+`#include <algorithm>'が必要。
+
+`sort(first,second)'として、`first`から`second`までをソートする。
+
+```
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+int main()
+{
+  std::vector<int> v = {3, 1, 4, 2, 5};
+
+  // 並べ替える
+  std::sort(v.begin(), v.end());
+
+}
+```
+
 ### 二次元 vector
 
 ```vector.cpp
@@ -48,6 +70,30 @@ vector<vector<int>> data(3, vector<int>(4));
 data.at(i).at(j) = 0;
 //初期化(n_rowsが縦,n_colsが横,valueが初期化する値)
 vec.assign(n_rows, vector<int>(n_cols, value));
+```
+
+### vetor の pair
+
+> pair は、2 つの異なる型の値を保持する「組」を表現するためのクラスである。また、N 個の異なる型の値を保持する「タプル」を表現するためのクラスとして、tuple クラスも提供されている。
+
+```pari.cpp
+#include <iostream>
+// 必須ライブラリ
+#include <utility>
+#include <string>
+
+int main()
+{
+  // pairオブジェクトの構築
+  std::pair<int, std::string> p = std::make_pair(1, "hello");
+
+  // 要素の参照
+  // 最初の要素
+  std::cout << .first << std::endl;
+  // 2つ目の要素
+  std::cout << p.second << std::endl;
+}
+
 ```
 
 ### 範囲 for 文
