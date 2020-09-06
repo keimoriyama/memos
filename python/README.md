@@ -1,16 +1,20 @@
 # python のメモ
 
-## 空白区切りの入力について
+## 競技関連
+
+### 空白区切りの入力について
 
 `1 2 3`みたいに空白区切りの入力を受け取るときの処理。
 
 下の例では map 関数を使って入力を空白で区切ったあとに int 型にキャストしてる
 
 ```a.py
-D,T,S = map(int, input().split())
+D,T,S = map(int, input(データの可視化)
+
+matplotlibよりも簡単に可視化できるらしい.split())
 ```
 
-## map 関数
+### map 関数
 
 [python3.8.5 公式ドキュメント](https://docs.python.org/ja/3/library/functions.html)より
 
@@ -28,9 +32,27 @@ D,T,S = map(int, input().split())
 
 ```
 
-## pandas
+## kaggle 関連
 
-### 文字を特定の数字に変換する
+### pandas
+
+[公式ドキュメント](https://pandas.pydata.org/)
+
+#### データの概要の表示
+
+`Pandas Profiling`を使うと便利（実行に時間がかかる場合がある）
+
+```pd_prof.py
+# モジュールのインポート
+import pandas as pd
+import pandas_profiling
+# csvデータの読み込み
+train = pd.read_csv('../input/titanic/train.csv')
+# 概要の表示
+train.profile_report()
+```
+
+#### 文字を特定の数字に変換する
 
 `replace`を使って変換する。
 
@@ -38,4 +60,62 @@ D,T,S = map(int, input().split())
 
 ```test.py
 data['Sex'].replace(['male', 'female'], [0, 1], inplace=True)
+```
+
+### 機械学習アルゴリズム
+
+#### ロジスティック回帰
+
+```clf.py
+# モジュールのインポート
+from sklearn.linear_model import LogisticRegression
+# （）の中はハイパーパラメータ
+# ロジスティック回帰のオブジェクトを作成
+clf = LogisticRegression(penalty='l2', solver='sag', random_state=0)
+# 学習する
+clf.fit(X_train, y_train)
+# 予測する(予測する結果はy_predに代入される)
+y_pred = clf.predict(X_test)
+```
+
+### matplotlib(データの可視化)
+
+[公式ドキュメント](https://matplotlib.org/)
+
+#### ヒストグラムの描画
+
+`matploglib.pyplot'の`hist`を使う
+
+`bins` は表示するヒストグラムの棒の数
+
+`alpha` はヒストグラムの透明度
+
+```plot.py
+# モジュールのインポート
+import matplotlib.pyplot as plt
+# trainデータの中で、Survivedが0の年齢をヒストグラムに表示している
+# drpona()で欠損値を除いている
+# 重ねて表示するので、histを2回呼んでいる
+plt.hist(train.loc[train['Survived'] == 0, 'Age'].dropna(), bins = 30,alpha = 0.5, label = '0')
+# trainデータの中で、Survivedが1の年齢をヒストグラムに表示している
+plt.hist(train.loc[train['Survived'] == 1, 'Age'].dropna(), bins = 30,alpha = 0.5, label = '1')
+# 縦軸と横軸の設定
+plt.xlabel('Age')
+plt.ylabel('count')
+# ラベルを貼る
+plt.legend(title='Survived')
+```
+
+### seaborn(データの可視化)
+
+matplotlib よりも簡単に可視化できるらしい
+
+[公式ドキュメント](https://seaborn.pydata.org/)
+
+```
+import seaborn as sns
+# dataには描画もとのデータを入れる
+# xのデータに対してhueのデータの集計を取る
+sns.countplot(x='SibSp',hue='Survived', data = train)
+plt.legend(loc= 'upper right', title = 'survived')
 ```
