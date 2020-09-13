@@ -8,11 +8,11 @@
 
 `mode`の引数は以下の通り
 
-| 引数  |        意味        |
-| :---: | :----------------: |
-|   r   | 読み込み専用で開く |
-|   w   | 書き込み専用で開く |
-|   x   |  新規作成用で開く  |
+| 引数 |        意味        |
+| :--: | :----------------: |
+|  r   | 読み込み専用で開く |
+|  w   | 書き込み専用で開く |
+|  x   |  新規作成用で開く  |
 
 ```test.py
 # pathは開くファイルに対するパス
@@ -32,7 +32,6 @@ with open(path, mode = 'r') as f:
 |   write()    |     ファイルに文字列を書き込む     |
 | writelines() |  リストの内容をファイルに書き込む  |
 
-
 ### 空白区切りの入力について
 
 `1 2 3`みたいに空白区切りの入力を受け取るときの処理。
@@ -40,9 +39,7 @@ with open(path, mode = 'r') as f:
 下の例では map 関数を使って入力を空白で区切ったあとに int 型にキャストしてる
 
 ```a.py
-D,T,S = map(int, input(データの可視化)
-
-matplotlibよりも簡単に可視化できるらしい.split())
+D,T,S = map(int, input().split())
 ```
 
 ### map 関数
@@ -107,6 +104,66 @@ clf = LogisticRegression(penalty='l2', solver='sag', random_state=0)
 clf.fit(X_train, y_train)
 # 予測する(予測する結果はy_predに代入される)
 y_pred = clf.predict(X_test)
+```
+
+#### ランダムフォレスト
+
+`n_estimators`は木の数
+
+`max_depth`は木の深さ
+
+```forest.py
+# モジュールのインポート
+from sklearn.ensemble import RandomForestClassifier
+# オブジェクトの作成
+clf = RandomForestClassifier(n_estimators=100, max_depth=2, random_state = 0)
+```
+
+#### LightGBM
+
+LightGBM を使う前に
+
+1. 学習用、検証用に学習用データセットを分割（過学習予防）
+
+```a.py
+# 分割するためのモジュールをインポート
+from sklearn.model_selection import train_test_split
+# trainとvalidに分ける
+X_train, X_valid, y_train, y_valid = train_test_split(X_train, y_train, test_size = 0.3, random_state = 0, stratify=y_train)
+```
+
+2. カテゴリ変数をリスト形式で宣言する
+
+LightGBM に何をカテゴリ変数として扱ってほしいかを教えるために必要
+
+```a.py
+categorical_features = ['Embarked', 'Pclass', 'Sex']
+```
+
+```lgb.py
+# モジュールのインポート
+import lightgbm as lgb
+# 学習データと評価データの設定
+lgb_train = lgb.Dataset(X_train, y_train,
+                       categorical_feature=categorical_features)
+# 評価データは訓練データをreferenceにする必要がある
+lgb_eval = lgb.Dataset(X_valid, y_valid, reference = lgb_train,
+                      categorical_feature = categorical_features)
+# 訓練用のパラメータ
+params = {
+    'objective':'binary'
+}
+# valid_setsには評価用のデータ
+# verbose_evalには何回ごとに結果を出力するかを指定（early_stoppingに引っかかったときも表示してくれる
+# num_boost_roundは最大実行回数
+# early_stopping_roundsは精度が向上しなかった場合に打ち切る回数（今回は10回）
+model = lgb.train(params, lgb_train,
+                 valid_sets=[lgb_train, lgb_eval],
+                 verbose_eval = 10,
+                 num_boost_round=10000,
+                 early_stopping_rounds=10)
+
+y_pred = model.predict(X_test, num_iteration= model.best_iteration)
 ```
 
 ### matplotlib(データの可視化)
