@@ -3,14 +3,54 @@ import ReactDOM from "react-dom";
 import "./index.css";
 
 class Square extends React.Component {
+  /* Squareでマス目の状態を管理する必要はないので
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: null,
+    };
+  }
+  */
   render() {
-    return <button className="square">{/* TODO */}</button>;
+    return (
+      <button
+        className="square"
+        onClick={() => {
+          this.props.onClick();
+        }}
+      >
+        {this.props.value}
+      </button>
+    );
   }
 }
 
 class Board extends React.Component {
+  // stateのリフトアップ部分
+  //親コンポーネントであるBoardにstateを管理させる
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null),
+    };
+  }
+
+  hanldeClick(i) {
+    // 配列のコピーを作成してそれを編集する
+    const squares = this.state.squares.slice();
+    squares[i] = "X";
+    // コピーの内容をもとの配列に反映させる
+    this.setState({ squares: squares });
+  }
   renderSquare(i) {
-    return <Square />;
+    return (
+      <Square
+        // squareにboardのstateを渡している
+        value={this.state.squares[i]}
+        // squareにonClickの挙動を渡している
+        onClick={() => this.hanldeClick(i)}
+      />
+    );
   }
 
   render() {
