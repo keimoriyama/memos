@@ -208,6 +208,103 @@ sns.countplot(x='SibSp',hue='Survived', data = train)
 plt.legend(loc= 'upper right', title = 'survived')
 ```
 
+### Oputina
+
+[公式ドキュメント](https://optuna.readthedocs.io/en/stable/index.html)
+
+ハイパーパラメータをチューニングしてくれるライブラリ。
+
+チューニングしたいハイパーパラメータを`trial.suggest_int`を使って最適なパラメータにする
+
+```a.py
+# optunaを用いてハイパーパラメータをチューニングするための関数
+def objective(trial):
+    # max_binとnum_leavesをチューニングする
+    params = {
+        'objective':'binary',
+        # 範囲は255~500
+        'max_bin':trial.suggest_int('max_bin',255,500),
+        'learning_rate':0.05,
+        # 範囲は32~128
+        'num_leaves':trial.suggest_int('num_leaves',32,128),
+    }
+    # モデルを訓練する
+    lgb_train = lgb.Dataset(X_train,y_train,categorical_feature = categorical_features)
+    lgb_eval = lgb.Dataset(X_valid, y_valid, categorical_feature= categorical_features)
+    model = lgb.train(params, lgb_train,
+                        valid_sets=[lgb_train, lgb_eval],
+                     verbose_eval=10,
+                     num_boost_round=1000,
+                     early_stopping_rounds=10)
+    y_pred_valid = model.predict(X_valid,num_iteration=model.best_iteration)
+    # 損失の計算（なるべく小さくしたい）
+    score = log_loss(y_valid, y_pred_valid)
+    return score
+```
+
+optuna オブジェクトを作って、`optimize`メソッドを使って最適化する。
+
+```a.py
+# オブジェクトの作成
+study = optuna.create_study(sampler=optuna.samplers.RandomSampler(seed = 0))
+# 最適化する（試行回数は40回）
+study.optimize(objective, n_trials = 40)
+# 結果の表示
+study.best_params
+```
+
+### K-Fold
+
+モデルの評価に使う。
+
+学習データを fold という単位で分割して、異なる fold に対してモデルを訓練して制度を向上させる狙い。
+
+`sckit-learn`の`KFold`ライブラリを使う
+
+TODO:詳しい説明を書く
+
+```a.py
+from sklearn.model_selection import KFold
+
+y_preds = []
+models = []
+oof_train = np.zeros(((len(X_train),)))
+# n_splitsで分割数を指定する（今回は５）
+cv = KFold(n_splits=5, shuffle=True, random_state = 0)
+categorical_features = ['Embarked', 'Pclass', 'Sex']
+
+params = {
+    'objective':'binary',
+    'max_bin': 427,
+    'learning_late': 0.05,
+    'num_leaves' : 79
+}
+
+for fold_id, (train_index, valid_index) in enumerate(cv.split(X_train)):
+    X_tr = X_train.loc[train_index, :]
+    X_val = X_train.loc[valid_index,:]
+    y_tr = y_train[train_index]
+    y_val = y_valid[valid_index]
+
+    lgb_train = lgb.Dataset(X_tr, y_tr,
+                       categorical_feature=categorical_features)
+    lgb_eval = lgb.Dataset(X_val, y_val, reference = lgb_train,
+                      categorical_feature = categorical_features)
+
+    model = lgb.train(params, lgb_train,
+                 valid_sets=[lgb_train, lgb_eval],
+                 verbose_eval = 10,
+                 num_boost_round=10000,
+                 early_stopping_rounds=10)
+    # 学習に使われなかったfoldのことをout of fold(oof)という。oofに対する予測結果をoof_trainに格納する
+    oof_train[valid_index] = \
+    model.predict(X_val, num_iteration=model.best_iteration)
+    y_pred = model.predict(X_test, num_iteration=model.best_iteration)
+
+    y_preds.append(y_pred)
+    models.append(model)
+```
+
 ## 研究関連
 
 ### seq2seq などを動かす前にやること
