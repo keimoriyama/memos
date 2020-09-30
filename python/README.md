@@ -325,8 +325,6 @@ study.best_params
 
 `sckit-learn`の`KFold`ライブラリを使う
 
-TODO:詳しい説明を書く
-
 ```a.py
 from sklearn.model_selection import KFold
 
