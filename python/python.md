@@ -38,6 +38,22 @@ with open(path, mode = 'r') as f:
 D,T,S = map(int, input().split())
 ```
 
+# jsonファイルを開く
+
+jsonライブラリを使う。
+
+```json.py
+# ライブラリをインポート
+import json
+# jsonファイルのpath
+path = "..."
+# jsonファイルを開く
+json_file = open(path,'r', encoding="utf-8")
+# 一行毎にファイルを読み込む
+for line in json_file:
+    jsd = json.loads(line)
+```
+
 # map 関数
 
 [python3.8.5 公式ドキュメント](https://docs.python.org/ja/3/library/functions.html)より
