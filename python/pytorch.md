@@ -9,8 +9,13 @@
 ```a.py
 from __future__ import print_function
 import torch
-
+# 空の行列を用意する
 x = torch.empty(5, 3)
+# 乱数で初期化する
+x = torch.rand(5, 3)
+# 全部0で初期化する
+x = torch.zeros(5, 3)
+# 行列の表示
 print(x)
 ```
 
