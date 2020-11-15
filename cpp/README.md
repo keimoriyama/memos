@@ -140,3 +140,48 @@ int main()
   }
 }
 ```
+
+
+### 辞書順の順列を生成する
+
+`std::next_permutation(first, last)`を使う
+
+`<algorithm>`をインクルードしないといけない
+
+`first`から`last`までの範囲を辞書順にすべての順列を生成してくれる(この範囲が昇順にソート済みの場合)
+
+```a.cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+void print(const std::vector<int>& v)
+{
+  std::for_each(v.begin(), v.end(), [](int x) {
+    std::cout << x << " ";
+  });
+  std::cout << std::endl;
+}
+
+int main ()
+{
+  // 昇順にソート済みの入力
+  std::vector<int> v = {1, 2, 3};
+
+  do {
+    print(v);
+    // ここでvの中身が順列になっている
+  } while (std::next_permutation(v.begin(), v.end()));
+}
+```
+
+実行結果
+
+```a.cpp
+1 2 3 
+1 3 2 
+2 1 3 
+2 3 1 
+3 1 2 
+3 2 1 
+```
