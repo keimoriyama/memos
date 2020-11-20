@@ -10,7 +10,19 @@
 
 - データセット内にグループが存在しないか
 
-## KFold
+## sklearn.model_selection
+
+### train_test_split
+
+リストの中身を割合に応じてテストデータと開発データに分割する
+
+```a.py
+from sklearn.model_selection import train_test_split
+# 開発データと訓練データを7:3に分ける
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state = 0)
+```
+
+### Kfold
 
 ```a.py
 from sklearn.model_selection import KFold
@@ -34,11 +46,13 @@ for fold_id, (train_index, valid_index) in enumerate(cv.split(X_train)):
     X_val = X_train.loc[valid_index,:]
     y_tr = y_train[train_index]
     y_val = y_valid[valid_index]
-
+    
+    # lightBGMの訓練
     lgb_train = lgb.Dataset(X_tr, y_tr,
                        categorical_feature=categorical_features)
-    lgb_eval = lgb.Dataset(X_val, y_val, reference = lgb_train,
-                      categorical_feature = categorical_features)
+    lgb_eval = lgb.Dataset(X_val, y_val, 
+                            reference = lgb_train,
+                            categorical_feature = categorical_features)
 
     model = lgb.train(params, lgb_train,
                  valid_sets=[lgb_train, lgb_eval],
@@ -54,9 +68,40 @@ for fold_id, (train_index, valid_index) in enumerate(cv.split(X_train)):
     models.append(model)
 ```
 
+## sklearn.preprocessing
+
+### StandardScaler
+
+データを正規化する
+
+```a.py
+from sklearn.preprocessing import StandardScaler
+# オブジェクトの生成
+sc = StandardScaler()
+# モデルを作成する
+sc.fit(X_train)
+# 正規化する
+X_train_std = sc.transform(X_train)
+X_test_std = sc.transform(X_test)
+```
+
 # 機械学習アルゴリズム
 
-## ロジスティック回帰
+## sklearn.linear_model
+
+### Perceptron
+
+パーセプトロンのアルゴリズム
+
+```a.py
+from sklearn.linear_model import Perceptron
+# オブジェクトを作る
+ppn = Perceptron(eta0=0.1, random_state=0, shuffle=True)
+# データに適合させる
+ppn.fit(X_train_std, y_train)
+```
+
+### LogisticRegression
 
 ```clf.py
 # モジュールのインポート
@@ -70,7 +115,9 @@ clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
 ```
 
-## ランダムフォレスト
+## sklearn.ensemble
+
+### RandomForestClassifier
 
 `n_estimators`は木の数
 
@@ -81,4 +128,17 @@ y_pred = clf.predict(X_test)
 from sklearn.ensemble import RandomForestClassifier
 # オブジェクトの作成
 clf = RandomForestClassifier(n_estimators=100, max_depth=2, random_state = 0)
+```
+
+## skelarn.metrics
+
+### accuracy_score
+
+モデルの性能指標の一つで正解率を計算してくれる
+
+```a.py
+from sklearn.metrics import accuracy_score
+# y_testは正解データ、y_predはモデルの予測データ
+# accuracy_score(y_test, y_pred)で正解率の計算
+print('Accuracy: %.2f' % accuracy_score(y_test, y_pred))
 ```
