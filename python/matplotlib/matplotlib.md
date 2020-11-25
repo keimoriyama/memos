@@ -2,6 +2,21 @@
 
 [公式ドキュメント](https://matplotlib.org/)
 
+## とりあえず描画する
+
+ランダムなデータを10個用意して、折れ線グラフで表示する
+
+```a.py
+from matplotlib import pyplot as plt
+from random import randint
+# x,yはともにリスト
+x = list(range(10))
+y = [randint(1, 100) for _ in x]
+
+plt.plot(x, y)
+plt.show()
+```
+
 ## ヒストグラムの描画
 
 `matploglib.pyplot'の`hist`を使う
