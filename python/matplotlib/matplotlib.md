@@ -17,6 +17,42 @@ plt.plot(x, y)
 plt.show()
 ```
 
+## 2つのグラフを重ねて表示する
+
+```a.py
+from matplotlib import pyplot as plt
+from random import randint
+
+x = list(range(10))
+y1 = [randint(1, 100) for _ in x]
+y2 = [randint(1, 100) for _ in x]
+
+plt.plot(x, y1)
+plt.plot(x, y2)
+plt.show()
+```
+
+# 2つのグラフを別々に表示する
+
+縦に分ける。`add_subplot`の引数には`縦のプロットエリアの数`、`横のプロットエリアの数`、`描画するプロットエリア番号`の順番に指定する。
+
+```a.py
+from matplotlib import pyplot as plt
+from random import randint
+
+x = list(range(10))
+y1 = [randint(1, 100) for _ in x]
+y2 = [randint(1, 100) for _ in x]
+
+fig = plt.figure()
+
+ax = fig.add_subplot(2, 1, 1)
+ax.plot(x, y1)
+ax = fig.add_subplot(2, 1, 2)
+ax.plot(x, y2)
+plt.show()
+```
+
 ## ヒストグラムの描画
 
 `matploglib.pyplot'の`hist`を使う
