@@ -1,5 +1,7 @@
 # TORCHVISION OBJECT DETECTION FINETUNING TUTORIAL
 
+URL:https://pytorch.org/tutorials/intermediate/torchvision_tutorial.html
+
 Mask R-CNNをファインチューニングして通行人の検知をする。
 
 ## データセットの定義
