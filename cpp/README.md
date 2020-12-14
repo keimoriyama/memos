@@ -39,9 +39,9 @@ A.at(i) = 0
 
 `#include <algorithm>'が必要。
 
-`sort(first,second)'として、`first`から`second`までをソートする。
+`sort(first,second)`として、`first`から`second`までをソートする。
 
-```
+```c.cpp
 #include <iostream>
 #include <string>
 #include <vector>
